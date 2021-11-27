@@ -1,0 +1,12 @@
+// Network API to retrieve pokemon information
+import { getResource, postResource } from "./APIUtils";
+var urljoin = require('url-join');
+
+const pokemonInfoPrefix = "/pokemon/pokemon_info/";
+
+
+export const findAllPokemonInfo = () =>
+    getResource(pokemonInfoPrefix);
+
+export const getPokemonInfoById = (id) =>
+    getResource(urljoin(pokemonInfoPrefix, id));
