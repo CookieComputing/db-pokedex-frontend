@@ -18,8 +18,6 @@ export const createMove = (moveData) =>
     postResource(urljoin(movePrefix, createResource) + "/", moveData);
 
 export const updateMove = (id, newMoveData) =>{
-
-    console.log(urljoin(movePrefix, updateResource, id));
     return postResource(urljoin(movePrefix, updateResource, id) + "/", newMoveData);
 }
 
