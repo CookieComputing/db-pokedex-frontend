@@ -4,9 +4,11 @@ var urljoin = require('url-join');
 
 const pokemonInfoPrefix = "/pokemon/pokemon_info/";
 
-
 export const findAllPokemonInfo = () =>
     getResource(pokemonInfoPrefix);
 
 export const getPokemonInfoById = (id) =>
     getResource(urljoin(pokemonInfoPrefix, id));
+
+export const createPokemonInfo = (pokemonInfo) =>
+    postResource(urljoin(pokemonInfoPrefix, "create/"), pokemonInfo)
