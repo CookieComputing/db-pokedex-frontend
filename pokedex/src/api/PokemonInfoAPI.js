@@ -12,3 +12,7 @@ export const getPokemonInfoById = (id) =>
 
 export const createPokemonInfo = (pokemonInfo) =>
     postResource(urljoin(pokemonInfoPrefix, "create/"), pokemonInfo)
+
+export const updatePokemonInfo = (pokemonInfo) => {
+    postResource(urljoin(pokemonInfoPrefix, "update/", pokemonInfo.national_num.toString(), "/"), pokemonInfo)
+}

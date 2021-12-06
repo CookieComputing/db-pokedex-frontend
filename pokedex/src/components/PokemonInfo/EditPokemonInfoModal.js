@@ -3,15 +3,38 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 const { useState, useEffect } = React;
-// TODO: Fix evolve and devolve later
+// TODO: Fix devolve and evolve later
 
-export default function AddModal({ show, handleClose, pokemonInfo, handleSave }) {
+export default function EditModal({ show, handleClose, pokemonInfo, handleSave, pokemonInfoIndex }) {
     const [nationalNumber, setNationalNumber] = useState("")
     const [name, setName] = useState("")
     const [photoUrl, setPhotoUrl] = useState("")
     const [description, setDescription] = useState("")
     // const [devolvedState, setDevolvedState] = useState("")
     // const [evolvedState, setEvolvedState] = useState("")
+
+    useEffect(() => {
+        if (pokemonInfo.length !== 0) {
+            let currInfo = pokemonInfo[pokemonInfoIndex]
+            let currInfoFields = currInfo.fields
+
+            // let devolvedStateID = currInfoFields.devolved_state_pkid
+            // if (devolvedStateID !== null) {
+            //     let devolvedPokemon = pokemonInfo.find(info => info.fields.devolved_state_pkid === devolvedStateID)
+            //     setDevolvedState(`${devolvedStateID} ${devolvedPokemon.fields.name}`)
+            // }
+            // let evolvedStateID = currInfoFields.evolved_state_pkid
+            // if (evolvedStateID !== null) {
+            //     let evolvedPokemon = pokemonInfo.find(info => info.fields.evolved_state_pkid === evolvedStateID)
+            //     setEvolvedState(`${evolvedStateID} ${evolvedPokemon.fields.name}`)
+            // }
+
+            setNationalNumber(currInfo.pk)
+            setName(currInfoFields.name)
+            setPhotoUrl(currInfoFields.photo_url)
+            setDescription(currInfoFields.description)
+        }
+    }, [pokemonInfoIndex])
 
     let payload = {
         national_num: parseInt(nationalNumber),
@@ -28,7 +51,7 @@ export default function AddModal({ show, handleClose, pokemonInfo, handleSave })
     return <>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Add a Pokemon Info!</Modal.Title>
+                <Modal.Title>Edit a Pokemon Info!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -82,7 +105,7 @@ export default function AddModal({ show, handleClose, pokemonInfo, handleSave })
                     Close
                 </Button>
                 <Button variant="primary" onClick={() => handleSave(payload)}>
-                    Create
+                    Edit
                 </Button>
             </Modal.Footer>
         </Modal>
