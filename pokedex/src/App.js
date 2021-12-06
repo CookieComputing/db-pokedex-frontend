@@ -11,7 +11,7 @@ import {
 import Home from './components/Home';
 import { PokemonInfoTab } from './components/PokemonInfo/PokemonInfo';
 import Trainers from './components/Trainers';
-import Moves from './components/Moves';
+import Moves from './components/Moves/Moves';
 
 
 function App() {
