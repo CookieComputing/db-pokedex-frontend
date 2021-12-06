@@ -41,7 +41,6 @@ function PokemonInfoList(props) {
     }
 
     const handleEdit = async (payload) => {
-        console.log(payload)
         await updatePokemonInfo(payload);
         // Artificial timeout for UI/UX reload
         setTimeout(function () {
