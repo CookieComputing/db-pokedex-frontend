@@ -62,12 +62,3 @@ function PokemonInfoList(props) {
             handleSave={handleSave} />
     </div>
 }
-
-function PokemonInfoDetails(props) {
-    return <Container>
-        <Row>
-            <Col></Col>
-            <Col></Col>
-        </Row>
-    </Container>
-}

@@ -53,7 +53,7 @@ export default function AddModal({ show, handleClose, pokemonInfo, handleSave })
                     <Form.Control
                         placeholder="Enter description"
                         value={description}
-                        onChange={(e) => setName(e.target.value)} />
+                        onChange={(e) => setDescription(e.target.value)} />
                     <br />
                     <Form.Label>Devolved State</Form.Label>
                     <Form.Select
