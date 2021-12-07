@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import Home from './components/Home';
 import { PokemonInfoTab } from './components/PokemonInfo/PokemonInfo';
-import Trainers from './components/Trainers';
+import Trainers from './components/Trainers/Trainers';
 import Moves from './components/Moves/Moves';
 
 
