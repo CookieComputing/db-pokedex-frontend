@@ -91,6 +91,6 @@ function PokemonTrainersList(props) {
             show={delModalVisible}
             handleClose={() => setDelModalVisible(false)}
             handleDel={handleDel}
-            national_num={pokemonTrainer[pokemonTrainerIndex]?.pk} />
+            primary_key={pokemonTrainer[pokemonTrainerIndex]?.pk} />
     </div>
 }

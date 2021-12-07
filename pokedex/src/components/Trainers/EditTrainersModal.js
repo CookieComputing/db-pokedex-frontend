@@ -5,16 +5,19 @@ import Form from 'react-bootstrap/Form';
 const { useState, useEffect } = React;
 
 export default function EditModal({ show, handleClose, pokemonTrainer, handleEdit, pokemonTrainerIndex }) {
+    const [pk, setPK] = useState("")
     const [first_name, setFirstName] = useState("")
     const [last_name, setLastName] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+
     useEffect(() => {
         if (pokemonTrainer.length !== 0) {
             let currTrainer = pokemonTrainer[pokemonTrainerIndex]
             let currTrainerFields = currTrainer.fields
 
+            setPK(currTrainer.pk)
             setFirstName(currTrainerFields.first_name)
             setLastName(currTrainerFields.last_name)
             setUsername(currTrainerFields.username)
@@ -24,6 +27,7 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
     }, [pokemonTrainerIndex])
 
     let payload = {
+        pk,
         first_name,
         last_name,
         username,
