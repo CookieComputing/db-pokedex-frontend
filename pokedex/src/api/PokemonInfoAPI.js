@@ -16,3 +16,7 @@ export const createPokemonInfo = (pokemonInfo) =>
 export const updatePokemonInfo = (pokemonInfo) => {
     postResource(urljoin(pokemonInfoPrefix, "update/", pokemonInfo.national_num.toString(), "/"), pokemonInfo)
 }
+
+export const delPokemonInfo = ({ national_num }) => {
+    postResource(urljoin(pokemonInfoPrefix, "delete/", national_num.toString(), "/"))
+}

@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 const { useState, useEffect } = React;
 // TODO: Fix devolve and evolve later
 
-export default function EditModal({ show, handleClose, pokemonInfo, handleSave, pokemonInfoIndex }) {
+export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, pokemonInfoIndex }) {
     const [nationalNumber, setNationalNumber] = useState("")
     const [name, setName] = useState("")
     const [photoUrl, setPhotoUrl] = useState("")
@@ -104,7 +104,7 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleSave, 
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => handleSave(payload)}>
+                <Button variant="primary" onClick={() => handleEdit(payload)}>
                     Edit
                 </Button>
             </Modal.Footer>
