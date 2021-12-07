@@ -10,24 +10,24 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
     const [name, setName] = useState("")
     const [photoUrl, setPhotoUrl] = useState("")
     const [description, setDescription] = useState("")
-    // const [devolvedState, setDevolvedState] = useState("")
-    // const [evolvedState, setEvolvedState] = useState("")
+    const [devolvedState, setDevolvedState] = useState("")
+    const [evolvedState, setEvolvedState] = useState("")
 
     useEffect(() => {
         if (pokemonInfo.length !== 0) {
             let currInfo = pokemonInfo[pokemonInfoIndex]
             let currInfoFields = currInfo.fields
 
-            // let devolvedStateID = currInfoFields.devolved_state_pkid
-            // if (devolvedStateID !== null) {
-            //     let devolvedPokemon = pokemonInfo.find(info => info.fields.devolved_state_pkid === devolvedStateID)
-            //     setDevolvedState(`${devolvedStateID} ${devolvedPokemon.fields.name}`)
-            // }
-            // let evolvedStateID = currInfoFields.evolved_state_pkid
-            // if (evolvedStateID !== null) {
-            //     let evolvedPokemon = pokemonInfo.find(info => info.fields.evolved_state_pkid === evolvedStateID)
-            //     setEvolvedState(`${evolvedStateID} ${evolvedPokemon.fields.name}`)
-            // }
+            let devolvedStateID = currInfoFields.devolved_state_pkid
+            if (devolvedStateID !== null) {
+                let devolvedPokemon = pokemonInfo.find(info => info.pk === devolvedStateID)
+                setDevolvedState(`${devolvedStateID} ${devolvedPokemon.fields.name}`)
+            }
+            let evolvedStateID = currInfoFields.evolved_state_pkid
+            if (evolvedStateID !== null) {
+                let evolvedPokemon = pokemonInfo.find(info => info.pk === evolvedStateID)
+                setEvolvedState(`${evolvedStateID} ${evolvedPokemon.fields.name}`)
+            }
 
             setNationalNumber(currInfo.pk)
             setName(currInfoFields.name)
@@ -41,12 +41,12 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
         name,
         photo_url: photoUrl, description
     }
-    // if (evolvedState !== "Select" && evolvedState.length !== 0) {
-    //     payload.evolved_state_pkid = parseInt(evolvedState.split(" ")[0])
-    // }
-    // if (devolvedState !== "Select" && devolvedState.length !== 0) {
-    //     payload.devolvedState_pkid = parseInt(devolvedState.split(" ")[0])
-    // }
+    if (evolvedState !== "Select" && evolvedState.length !== 0) {
+        payload.evolved_state_pkid = parseInt(evolvedState.split(" ")[0])
+    }
+    if (devolvedState !== "Select" && devolvedState.length !== 0) {
+        payload.devolved_state_pkid = parseInt(devolvedState.split(" ")[0])
+    }
 
     return <>
         <Modal show={show} onHide={handleClose}>
@@ -72,14 +72,16 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
                         placeholder="Enter description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)} />
-                    {/* <br /> */}
-                    {/* <Form.Label>Devolved State</Form.Label>
+                    <br />
+                    <Form.Label>Devolved State</Form.Label>
                     <Form.Select
                         value={devolvedState}
                         onChange={(e) => setDevolvedState(e.target.value)}>
                         <option>Select</option>
                         {pokemonInfo.map((info) => {
-                            return <option key={info.pk}>{info.pk} {info.fields.name}</option>
+                            if (info.pk !== nationalNumber) {
+                                return <option key={info.pk}>{info.pk} {info.fields.name}</option>
+                            }
                         })}
                     </Form.Select>
                     <br />
@@ -89,9 +91,11 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
                         onChange={(e) => setEvolvedState(e.target.value)}>
                         <option>Select</option>
                         {pokemonInfo.map((info) => {
-                            return <option key={info.pk}>{info.pk} {info.fields.name}</option>
+                            if (info.pk !== nationalNumber) {
+                                return <option key={info.pk}>{info.pk} {info.fields.name}</option>
+                            }
                         })}
-                    </Form.Select> */}
+                    </Form.Select>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
