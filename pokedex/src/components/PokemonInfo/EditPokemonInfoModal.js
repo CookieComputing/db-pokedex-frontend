@@ -55,12 +55,6 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Label>National Number</Form.Label>
-                    <Form.Control
-                        placeholder="Enter national number"
-                        value={nationalNumber}
-                        onChange={(e) => setNationalNumber(e.target.value)} />
-                    <br />
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         placeholder="Enter name"
