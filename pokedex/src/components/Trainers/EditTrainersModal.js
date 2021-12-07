@@ -62,12 +62,6 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} />
                     <br />
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        placeholder="Enter Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} />
-                    <br />
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         placeholder="Enter Email"

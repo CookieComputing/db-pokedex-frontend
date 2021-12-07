@@ -30,8 +30,8 @@ function MovesList(props) {
         await createMove(payload);
         window.location.reload();
     }
-    
-    const handleUpdate = async(payload) => {
+
+    const handleUpdate = async (payload) => {
         await updateMove(payload.move_id.toString(), payload);
         window.location.reload();
     }
@@ -52,7 +52,7 @@ function MovesList(props) {
                         <div className="ms-2 me-auto">
                             <div className="fw-bold">{move.fields.name}</div>
                         </div>
-                        <Badge variant="primary" pill>
+                        <Badge variant="primary" className="btn-primary me-2 align-self-center" pill>
                             {move.pk}
                         </Badge>
                         <Button className="me-2" onClick={() => {
@@ -72,7 +72,7 @@ function MovesList(props) {
             show={addModalVisible}
             handleClose={() => setAddModalVisible(false)}
             handleSave={handleSave} />
-            <Button onClick={() => setAddModalVisible(true)}>Add</Button>
+        <Button onClick={() => setAddModalVisible(true)}>Add</Button>
         <EditMoveModal
             show={editModalVisible}
             handleClose={() => setEditModalVisible(false)}
