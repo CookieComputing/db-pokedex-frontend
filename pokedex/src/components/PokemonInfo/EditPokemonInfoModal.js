@@ -20,12 +20,12 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
 
             let devolvedStateID = currInfoFields.devolved_state_pkid
             if (devolvedStateID !== null) {
-                let devolvedPokemon = pokemonInfo.find(info => info.fields.devolved_state_pkid === devolvedStateID)
+                let devolvedPokemon = pokemonInfo.find(info => info.pk === devolvedStateID)
                 setDevolvedState(`${devolvedStateID} ${devolvedPokemon.fields.name}`)
             }
             let evolvedStateID = currInfoFields.evolved_state_pkid
             if (evolvedStateID !== null) {
-                let evolvedPokemon = pokemonInfo.find(info => info.fields.evolved_state_pkid === evolvedStateID)
+                let evolvedPokemon = pokemonInfo.find(info => info.pk === evolvedStateID)
                 setEvolvedState(`${evolvedStateID} ${evolvedPokemon.fields.name}`)
             }
 
