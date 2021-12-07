@@ -45,7 +45,7 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
     //     payload.evolved_state_pkid = parseInt(evolvedState.split(" ")[0])
     // }
     // if (devolvedState !== "Select" && devolvedState.length !== 0) {
-    //     payload.devolvedState_pkid = parseInt(devolvedState.split(" ")[0])
+    //     payload.devolved_state_pkid = parseInt(devolvedState.split(" ")[0])
     // }
 
     return <>
