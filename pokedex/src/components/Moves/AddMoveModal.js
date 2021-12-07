@@ -9,6 +9,9 @@ export default function AddModal({ show, handleClose, handleSave}) {
     const [description, setDescription] = useState("")
     const [elementType, setElementType] = useState("")
     const [moveType, setMoveType] = useState("")
+    const elemEnumType = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",
+                    "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy", "shadow"]
+    const moveEnumType = ["physical", "special", "status"]
 
     let payload = {
         name,
@@ -36,16 +39,24 @@ export default function AddModal({ show, handleClose, handleSave}) {
                             onChange={(e) => setDescription(e.target.value)} />
                         <br />
                         <Form.Label>Element Type</Form.Label>
-                        <Form.Control
-                            placeholder="Enter element type"
+                        <Form.Select
                             value={elementType}
-                            onChange={(e) => setElementType(e.target.value)} />
+                            onChange={(e) => setElementType(e.target.value)}>
+                            <option>Select</option>
+                            {elemEnumType.map((elem) => {
+                                return <option key={elem}>{elem}</option>
+                            })}
+                        </Form.Select>
                         <br />
                         <Form.Label>Move Type</Form.Label>
-                        <Form.Control
-                            placeholder="Enter move type"
+                        <Form.Select
                             value={moveType}
-                            onChange={(e) => setMoveType(e.target.value)} />
+                            onChange={(e) => setMoveType(e.target.value)}>
+                            <option>Select</option>
+                            {moveEnumType.map((elem) => {
+                                return <option key={elem}>{elem}</option>
+                            })}
+                        </Form.Select>
                         <br />
                     </Form>
                 </Modal.Body>
