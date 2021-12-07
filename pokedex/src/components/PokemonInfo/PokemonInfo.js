@@ -1,7 +1,7 @@
 // Components for handling Pokemon info
 
 import React from 'react';
-import { createPokemonInfo, findAllPokemonInfo, updatePokemonInfo } from '../../api/PokemonInfoAPI';
+import { createPokemonInfo, findAllPokemonInfo, updatePokemonInfo, delPokemonInfo } from '../../api/PokemonInfoAPI';
 import Tab from 'react-bootstrap/Tab';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col'
@@ -10,7 +10,8 @@ import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button';
 import AddPokemonInfoModal from "./AddPokemonInfoModal";
-import EditPokemonInfomodal from "./EditPokemonInfoModal";
+import EditPokemonInfoModal from "./EditPokemonInfoModal";
+import DelPokemonInfoModal from "./DelPokemonInfoModal";
 
 const { useState, useEffect } = React;
 
@@ -30,6 +31,7 @@ function PokemonInfoList(props) {
     const [pokemonInfoIndex, setPokemonInfoIndex] = useState(-1)
     const [addModalVisible, setAddModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
+    const [delModalVisible, setDelModalVisible] = useState(false);
 
     useEffect(() => {
         findAllPokemonInfo().then(pokeInfo => { setPokemonInfo(pokeInfo) })
@@ -48,6 +50,11 @@ function PokemonInfoList(props) {
         }, 800);
     }
 
+    const handleDel = async (payload) => {
+        await delPokemonInfo(payload);
+        window.location.reload();
+    }
+
     return <div>
         <h1>Pokemon Info</h1>
         <ListGroup as='ol' numbered>
@@ -62,10 +69,14 @@ function PokemonInfoList(props) {
                         <Badge variant="dark" className="btn-primary me-2 align-self-center" pill>
                             {pokeInfo.pk}
                         </Badge>
-                        <Button onClick={() => {
+                        <Button className="me-2" onClick={() => {
                             setPokemonInfoIndex(index)
                             setEditModalVisible(true)
                         }}>Edit</Button>
+                        <Button variant="danger" onClick={() => {
+                            setPokemonInfoIndex(index)
+                            setDelModalVisible(true)
+                        }}>Delete</Button>
                     </ListGroup.Item>
                 )
             }
@@ -77,11 +88,16 @@ function PokemonInfoList(props) {
             handleClose={() => setAddModalVisible(false)}
             pokemonInfo={pokemonInfo}
             handleSave={handleSave} />
-        <EditPokemonInfomodal
+        <EditPokemonInfoModal
             show={editModalVisible}
             handleClose={() => setEditModalVisible(false)}
             pokemonInfo={pokemonInfo}
-            handleSave={handleEdit}
+            handleEdit={handleEdit}
             pokemonInfoIndex={pokemonInfoIndex} />
+        <DelPokemonInfoModal
+            show={delModalVisible}
+            handleClose={() => setDelModalVisible(false)}
+            handleDel={handleDel}
+            national_num={pokemonInfo[pokemonInfoIndex]?.pk} />
     </div>
 }
