@@ -4,12 +4,24 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 const { useState, useEffect } = React;
 
-export default function EditModal({ show, handleClose, pokemonTrainer, handleSave, pokemonTrainerIndex }) {
+export default function EditModal({ show, handleClose, pokemonTrainer, handleEdit, pokemonTrainerIndex }) {
     const [first_name, setFirstName] = useState("")
     const [last_name, setLastName] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+    useEffect(() => {
+        if (pokemonTrainer.length !== 0) {
+            let currTrainer = pokemonTrainer[pokemonTrainerIndex]
+            let currTrainerFields = currTrainer.fields
+
+            setFirstName(currTrainerFields.first_name)
+            setLastName(currTrainerFields.last_name)
+            setUsername(currTrainerFields.username)
+            setPassword(currTrainerFields.password)
+            setEmail(currTrainerFields.email)
+        }
+    }, [pokemonTrainerIndex])
 
     let payload = {
         first_name,
@@ -61,16 +73,16 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleSav
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} />
-                </Form>
-            </Modal.Body>
+                </Form >
+            </Modal.Body >
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => handleSave(payload)}>
+                <Button variant="primary" onClick={() => handleEdit(payload)}>
                     Edit
                 </Button>
             </Modal.Footer>
-        </Modal>
+        </Modal >
     </>
 }

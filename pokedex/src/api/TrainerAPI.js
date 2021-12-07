@@ -17,9 +17,9 @@ export const findTrainerById = (id) =>
 export const createTrainer = (trainerData) =>
     postResource(urljoin(trainerPrefix, createResource) + "/", trainerData);
 
-export const updateTrainer = (id, newTrainerData) =>{
-    return postResource(urljoin(trainerPrefix, updateResource, id) + "/", newTrainerData);
+export const updateTrainer = (newTrainerData) => {
+    return postResource(urljoin(trainerPrefix, updateResource, newTrainerData.pk.toString()) + "/", newTrainerData);
 }
 
-export const deleteTrainer = (id) =>
-    postResource(urljoin(trainerPrefix, deleteResource, id) + "/", {});
+export const deleteTrainer = ({ pk }) =>
+    postResource(urljoin(trainerPrefix, deleteResource, pk.toString()) + "/", {});

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 const { useState, useEffect } = React;
 
-export default function AddModal({ show, handleClose, pokemonTrainer, handleSave }) {
+export default function AddModal({ show, handleClose, handleSave }) {
     const [first_name, setFirstName] = useState("")
     const [last_name, setLastName] = useState("")
     const [username, setUsername] = useState("")
@@ -17,7 +17,6 @@ export default function AddModal({ show, handleClose, pokemonTrainer, handleSave
         username,
         password,
         email
-
     }
 
     return <>
@@ -50,14 +49,14 @@ export default function AddModal({ show, handleClose, pokemonTrainer, handleSave
                         placeholder="Enter Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} />
-                                        <br />
+                    <br />
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} />
-                </Form>
-            </Modal.Body>
+                </Form >
+            </Modal.Body >
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
@@ -66,6 +65,6 @@ export default function AddModal({ show, handleClose, pokemonTrainer, handleSave
                     Create
                 </Button>
             </Modal.Footer>
-        </Modal>
+        </Modal >
     </>
 }

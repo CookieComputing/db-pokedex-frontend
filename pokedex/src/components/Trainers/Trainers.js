@@ -80,14 +80,13 @@ function PokemonTrainersList(props) {
         <AddTrainersModal
             show={addModalVisible}
             handleClose={() => setAddModalVisible(false)}
-            pokemonTrainer={pokemonTrainer}
             handleSave={handleSave} />
         <EditTrainersModal
             show={editModalVisible}
             handleClose={() => setEditModalVisible(false)}
-            pokemonInfo={pokemonTrainer}
+            pokemonTrainer={pokemonTrainer}
             handleEdit={handleEdit}
-            pokemonInfoIndex={pokemonTrainerIndex} />
+            pokemonTrainerIndex={pokemonTrainerIndex} />
         <DelTrainersModal
             show={delModalVisible}
             handleClose={() => setDelModalVisible(false)}
