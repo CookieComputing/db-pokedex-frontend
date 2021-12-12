@@ -24,11 +24,15 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
             if (devolvedStateID !== null) {
                 let devolvedPokemon = pokemonInfo.find(info => info.pk === devolvedStateID)
                 setDevolvedState(`${devolvedStateID} ${devolvedPokemon.fields.name}`)
+            } else {
+                setDevolvedState("")
             }
             let evolvedStateID = currInfoFields.evolved_state_pkid
             if (evolvedStateID !== null) {
                 let evolvedPokemon = pokemonInfo.find(info => info.pk === evolvedStateID)
                 setEvolvedState(`${evolvedStateID} ${evolvedPokemon.fields.name}`)
+            } else {
+                setEvolvedState("")
             }
 
             setNationalNumber(currInfo.pk)
