@@ -2,18 +2,16 @@
 
 import React from 'react';
 import { createPokemonInfo, findAllPokemonInfo, updatePokemonInfo, delPokemonInfo } from '../../api/PokemonInfoAPI';
-import Tab from 'react-bootstrap/Tab';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col'
-import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button';
 import AddPokemonInfoModal from "./AddPokemonInfoModal";
 import EditPokemonInfoModal from "./EditPokemonInfoModal";
 import DelPokemonInfoModal from "./DelPokemonInfoModal";
-
-const { useState, useEffect } = React;
+import Pages from "../Page";
+import { ListGroup } from 'react-bootstrap';
 
 // The main tab for rendering pokemon information
 export function PokemonInfoTab(props) {
@@ -26,75 +24,88 @@ export function PokemonInfoTab(props) {
     </div>
 }
 
-function PokemonInfoList(props) {
-    const [pokemonInfo, setPokemonInfo] = useState([])
-    const [pokemonInfoIndex, setPokemonInfoIndex] = useState(-1)
-    const [addModalVisible, setAddModalVisible] = useState(false);
-    const [editModalVisible, setEditModalVisible] = useState(false);
-    const [delModalVisible, setDelModalVisible] = useState(false);
+class PokemonInfoList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pokemonInfo: [],
+            pokemonInfoIndex: -1,
+            addModalVisible: false,
+            editModalVisible: false,
+            delModalVisible: false
+        }
+    }
 
-    useEffect(() => {
-        findAllPokemonInfo().then(pokeInfo => { setPokemonInfo(pokeInfo) })
-    }, [])
-
-    const handleSave = async (payload) => {
-        await createPokemonInfo(payload);
+    async handleSave(payload) {
+        createPokemonInfo(payload);
         window.location.reload();
     }
 
-    const handleEdit = async (payload) => {
-        await updatePokemonInfo(payload);
+    async handleEdit(payload) {
+        updatePokemonInfo(payload);
         window.location.reload();
     }
 
-    const handleDel = async (payload) => {
-        await delPokemonInfo(payload);
+    async handleDel(payload) {
+        delPokemonInfo(payload);
         window.location.reload();
     }
 
-    return <div>
+    componentDidMount() {
+        findAllPokemonInfo().then(pokeInfo => {
+            this.setState({pokemonInfo: pokeInfo})})
+    }
+
+    findIndex(pk) {
+        // Inefficient but whatever ¯\_(ツ)_/¯
+        return this.state.pokemonInfo.findIndex((pokeInfo) => pokeInfo.pk === pk)
+    }
+
+    render() {
+        return <div>
         <h1>Pokemon Info</h1>
-        <ListGroup as='ol' numbered>
-            {
-                pokemonInfo.map((pokeInfo, index) =>
-                    <ListGroup.Item as="li"
+        <Pages itemsInPageLimit={10} items={this.state.pokemonInfo} 
+        mapFn={(pokeInfo, index) =>
+                { return (<ListGroup.Item as="li"
                         className="d-flex justify-content-between align-items-start"
-                        key={pokeInfo.pk}>
-                        <div className="ms-2 me-auto">
+                        key={index}>
+                            <div className="ms-2 me-auto">
                             <div className="fw-bold">{pokeInfo.fields.name}</div>
                         </div>
                         <Badge variant="dark" className="btn-primary me-2 align-self-center" pill>
                             {pokeInfo.pk}
                         </Badge>
                         <Button className="me-2" onClick={() => {
-                            setPokemonInfoIndex(index)
-                            setEditModalVisible(true)
+                            this.setState({
+                                pokemonInfoIndex: pokeInfo.pk,
+                                editModalVisible: true
+                            })
                         }}>Edit</Button>
                         <Button variant="danger" onClick={() => {
-                            setPokemonInfoIndex(index)
-                            setDelModalVisible(true)
-                        }}>Delete</Button>
-                    </ListGroup.Item>
-                )
-            }
-        </ListGroup>
+                            this.setState({
+                                pokemonInfoIndex: pokeInfo.pk,
+                                delModalVisible: true
+                            })}}>Delete</Button>
+                    </ListGroup.Item>)
+                }}/>
         <br />
-        <Button onClick={() => setAddModalVisible(true)}>Add</Button>
+        <Button onClick={() => this.setState({addModalVisible: true})}>Add</Button>
         <AddPokemonInfoModal
-            show={addModalVisible}
-            handleClose={() => setAddModalVisible(false)}
-            pokemonInfo={pokemonInfo}
-            handleSave={handleSave} />
+            show={this.state.addModalVisible}
+            handleClose={() => this.setState({addModalVisible: false})}
+            pokemonInfo={this.state.pokemonInfo}
+            handleSave={(payload) => this.handleSave(payload)} />
         <EditPokemonInfoModal
-            show={editModalVisible}
-            handleClose={() => setEditModalVisible(false)}
-            pokemonInfo={pokemonInfo}
-            handleEdit={handleEdit}
-            pokemonInfoIndex={pokemonInfoIndex} />
+            show={this.state.editModalVisible}
+            handleClose={() => this.setState({editModalVisible: false})}
+            pokemonInfo={this.state.pokemonInfo}
+            handleEdit={(payload) => this.handleEdit(payload)}
+            pokemonInfoIndex={this.findIndex(this.state.pokemonInfoIndex)} />
         <DelPokemonInfoModal
-            show={delModalVisible}
-            handleClose={() => setDelModalVisible(false)}
-            handleDel={handleDel}
-            national_num={pokemonInfo[pokemonInfoIndex]?.pk} />
+            show={this.state.delModalVisible}
+            handleClose={() => this.setState({delModalVisible: false})}
+            handleDel={(payload) => this.handleDel(payload)}
+            national_num={this.state.pokemonInfo[this.findIndex(this.state.pokemonInfoIndex)]?.pk} />
     </div>
+    }
 }
