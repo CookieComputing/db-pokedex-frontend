@@ -34,17 +34,17 @@ class PokemonTrainersList extends React.Component {
     }
 
     async handleSave(payload) {
-        createTrainer(payload);
+        await createTrainer(payload);
         window.location.reload();
     }
 
     async handleEdit(payload) {
-        updateTrainer(payload);
+        await updateTrainer(payload);
         window.location.reload();
     }
 
     async handleDel(payload) {
-        deleteTrainer(payload);
+        await deleteTrainer(payload);
         window.location.reload();
     }
 
