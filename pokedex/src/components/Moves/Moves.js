@@ -8,7 +8,7 @@ import AddMoveModal from "./AddMoveModal";
 import { findAllMoves, updateMove, createMove, deleteMove } from '../../api/MoveAPI';
 import EditMoveModal from './EditMoveModal';
 import DelMoveModal from './DelMoveModal';
-const { useState, useEffect } = React;
+import Pages from '../Page';
 
 // Main component for rendering moves
 export default function Moves(props) {
@@ -16,74 +16,86 @@ export default function Moves(props) {
         <MovesList></MovesList>
     </div>
 }
-function MovesList(props) {
-    const [moves, setMoves] = useState([])
-    const [moveIndex, setMoveIndex] = useState("")
-    const [addModalVisible, setAddModalVisible] = useState(false);
-    const [editModalVisible, setEditModalVisible] = useState(false);
-    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-    useEffect(() => {
-        findAllMoves().then(moves => { setMoves(moves) })
-    }, [])
+class MovesList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            moves: [],
+            moveIndex: 0,
+            addModalVisible: false,
+            editModalVisible: false,
+            deleteModalVisible: false
+        }
+    }
 
-    const handleSave = async (payload) => {
-        await createMove(payload);
+    async handleSave(payload) {
+        createMove(payload);
         window.location.reload();
     }
 
-    const handleUpdate = async (payload) => {
-        await updateMove(payload.move_id.toString(), payload);
+    async handleUpdate(payload) {
+        updateMove(payload.move_id.toString(), payload);
         window.location.reload();
     }
 
-    const handleDelete = async (payload) => {
-        await deleteMove(payload.move_id.toString());
+    async handleDelete(payload) {
+         deleteMove(payload.move_id.toString());
         window.location.reload();
     }
 
-    return <div>
-        <h1>Moves</h1>
-        <ListGroup as='ol' numbered>
-            {
-                moves.map((move, index) =>
-                    <ListGroup.Item as="li"
-                        className="d-flex justify-content-between align-items-start"
-                        key={move.pk}>
-                        <div className="ms-2 me-auto">
-                            <div className="fw-bold">{move.fields.name}</div>
-                        </div>
-                        <Badge variant="primary" className="btn-primary me-2 align-self-center" pill>
-                            {move.pk}
-                        </Badge>
-                        <Button className="me-2" onClick={() => {
-                            setMoveIndex(index)
-                            setEditModalVisible(true)
-                        }}>Edit</Button>
-                        <Button variant="danger" onClick={() => {
-                            setMoveIndex(index)
-                            setDeleteModalVisible(true)
-                        }}>Delete</Button>
-                    </ListGroup.Item>
-                )
-            }
-        </ListGroup>
-        <br />
-        <AddMoveModal
-            show={addModalVisible}
-            handleClose={() => setAddModalVisible(false)}
-            handleSave={handleSave} />
-        <Button onClick={() => setAddModalVisible(true)}>Add</Button>
-        <EditMoveModal
-            show={editModalVisible}
-            handleClose={() => setEditModalVisible(false)}
-            handleUpdate={handleUpdate}
-            moves={moves}
-            moveIndex={moveIndex} />
-        <DelMoveModal
-            show={deleteModalVisible}
-            handleClose={() => setDeleteModalVisible(false)}
-            handleDelete={handleDelete}
-            moves={moves}
-            moveIndex={moveIndex} />
-    </div>
+    findMoveIndex(pk) {
+        return this.state.moves.findIndex((move) => move.pk === pk)
+    }
+
+    componentDidMount() {
+        findAllMoves().then(moves => { this.setState({moves: moves})})
+    }
+
+    render() {
+        return <div>
+            <h1>Moves</h1>
+            <Pages itemsInPageLimit={10} items={this.state.moves}
+            mapFn={(move) =>
+                <ListGroup.Item as="li"
+                    className="d-flex justify-content-between align-items-start"
+                    key={move.pk}>
+                    <div className="ms-2 me-auto">
+                        <div className="fw-bold">{move.fields.name}</div>
+                    </div>
+                    <Badge variant="primary" className="btn-primary me-2 align-self-center" pill>
+                        {move.pk}
+                    </Badge>
+                    <Button className="me-2" onClick={() => {
+                        this.setState({
+                            moveIndex: move.pk,
+                            editModalVisible: true
+                        })
+                    }}>Edit</Button>
+                    <Button variant="danger" onClick={() => {
+                        this.setState({
+                            moveIndex: move.pk,
+                            deleteModalVisible: true
+                        })
+                    }}>Delete</Button>
+                </ListGroup.Item>}/>
+            <br />
+            <AddMoveModal
+                show={this.state.addModalVisible}
+                handleClose={() => this.setState({addModalVisisble: false})}
+                handleSave={this.handleSave} />
+            <Button onClick={() => this.setState({addModalVisible: true})}>Add</Button>
+            <EditMoveModal
+                show={this.state.editModalVisible}
+                handleClose={() => this.setState({editModalVisible: false})}
+                handleUpdate={this.handleUpdate}
+                moves={this.state.moves}
+                moveIndex={this.findMoveIndex(this.state.moveIndex)} />
+            <DelMoveModal
+                show={this.state.deleteModalVisible}
+                handleClose={() => this.setState({deleteModalVisible: false})}
+                handleDelete={this.handleDelete}
+                moves={this.state.moves}
+                moveIndex={this.findMoveIndex(this.state.moveIndex)} />
+        </div>
+    }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-const { useState, useEffect } = React;
+const { useState } = React;
 // TODO: Fix evolve and devolve later
 
 export default function AddModal({ show, handleClose, pokemonInfo, handleSave }) {
