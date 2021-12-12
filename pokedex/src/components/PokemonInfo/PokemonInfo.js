@@ -12,6 +12,7 @@ import EditPokemonInfoModal from "./EditPokemonInfoModal";
 import DelPokemonInfoModal from "./DelPokemonInfoModal";
 import Pages from "../Page";
 import { ListGroup } from 'react-bootstrap';
+import PokemonInfoDetailsModal from './PokemonInfoDetails';
 
 // The main tab for rendering pokemon information
 export function PokemonInfoTab(props) {
@@ -32,7 +33,8 @@ class PokemonInfoList extends React.Component {
             pokemonInfoIndex: -1,
             addModalVisible: false,
             editModalVisible: false,
-            delModalVisible: false
+            delModalVisible: false,
+            detailModalVisible: false
         }
     }
 
@@ -78,6 +80,12 @@ class PokemonInfoList extends React.Component {
                         <Button className="me-2" onClick={() => {
                             this.setState({
                                 pokemonInfoIndex: pokeInfo.pk,
+                                detailModalVisible: true
+                            })
+                        }}>Details</Button>
+                        <Button className="me-2" onClick={() => {
+                            this.setState({
+                                pokemonInfoIndex: pokeInfo.pk,
                                 editModalVisible: true
                             })
                         }}>Edit</Button>
@@ -106,6 +114,11 @@ class PokemonInfoList extends React.Component {
             handleClose={() => this.setState({delModalVisible: false})}
             handleDel={(payload) => this.handleDel(payload)}
             national_num={this.state.pokemonInfo[this.findIndex(this.state.pokemonInfoIndex)]?.pk} />
+        <PokemonInfoDetailsModal
+            show={this.state.detailModalVisible}
+            handleClose={() => this.setState({detailModalVisible: false})}
+            pokemonInfo={this.state.pokemonInfo}
+            pokemonInfoIndex={this.findIndex(this.state.pokemonInfoIndex)} />
     </div>
     }
 }
