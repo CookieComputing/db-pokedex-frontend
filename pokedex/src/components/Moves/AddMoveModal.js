@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { elemEnumType, moveEnumType } from '../utils/Types';
 const { useState } = React;
 
 export default function AddModal({ show, handleClose, handleSave}) {
@@ -9,9 +10,6 @@ export default function AddModal({ show, handleClose, handleSave}) {
     const [description, setDescription] = useState("")
     const [elementType, setElementType] = useState("")
     const [moveType, setMoveType] = useState("")
-    const elemEnumType = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",
-                    "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy", "shadow"]
-    const moveEnumType = ["physical", "special", "status"]
 
     let payload = {
         name,
