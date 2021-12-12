@@ -29,17 +29,17 @@ class MovesList extends React.Component {
     }
 
     async handleSave(payload) {
-        createMove(payload);
+        await createMove(payload);
         window.location.reload();
     }
 
     async handleUpdate(payload) {
-        updateMove(payload.move_id.toString(), payload);
+        await updateMove(payload.move_id.toString(), payload);
         window.location.reload();
     }
 
     async handleDelete(payload) {
-         deleteMove(payload.move_id.toString());
+        await deleteMove(payload.move_id.toString());
         window.location.reload();
     }
 
