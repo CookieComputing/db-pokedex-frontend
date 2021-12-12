@@ -67,10 +67,10 @@ class PokemonInfoList extends React.Component {
         return <div>
         <h1>Pokemon Info</h1>
         <Pages itemsInPageLimit={10} items={this.state.pokemonInfo} 
-        mapFn={(pokeInfo, index) =>
+        mapFn={(pokeInfo) =>
                 { return (<ListGroup.Item as="li"
                         className="d-flex justify-content-between align-items-start"
-                        key={index}>
+                        key={pokeInfo.pk}>
                             <div className="ms-2 me-auto">
                             <div className="fw-bold">{pokeInfo.fields.name}</div>
                         </div>

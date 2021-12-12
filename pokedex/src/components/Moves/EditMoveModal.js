@@ -39,12 +39,6 @@ export default function EditMoveModal({ show, handleClose, handleUpdate, moves, 
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Label>Move Id</Form.Label>
-                        <Form.Control
-                            defaultValue={moveId}
-                            plaintext
-                            readOnly />
-                        <br />
                         <Form.Label>Name</Form.Label>
                         <Form.Control
                             placeholder="Enter name"
