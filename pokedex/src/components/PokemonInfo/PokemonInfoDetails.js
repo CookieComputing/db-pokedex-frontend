@@ -14,6 +14,7 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
     const [description, setDescription] = useState("")
     const [devolvedState, setDevolvedState] = useState("")
     const [evolvedState, setEvolvedState] = useState("")
+    const [pokemonTypes, setPokemonTypes] = useState([])
 
     useEffect(() => {
         if (pokemonInfo.length !== 0) {
@@ -39,6 +40,8 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
             setName(currInfoFields.name)
             setPhotoUrl(currInfoFields.photo_url)
             setDescription(currInfoFields.description)
+            setPokemonTypes(currInfo.types)
+            
         }
     }, [pokemonInfoIndex])
     return <>
@@ -55,6 +58,13 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
                 <br />
                 {(devolvedState.length === 0) ? null : <><p>Devolved State: {devolvedState}</p><br /></>}
                 {(evolvedState.length === 0) ? null : <><p>Evolved State: {evolvedState}</p><br /></>}
+                    {(pokemonTypes.length === 0) ? null :
+                    <>
+                    <b>Types: </b>
+                    <ul>
+                        {pokemonTypes.map((type) => <li>{type}</li>)}
+                    </ul>
+                    </>}
                 Photo: <Image src={photoUrl} fluid />
             </Modal.Body>
             <Modal.Footer>

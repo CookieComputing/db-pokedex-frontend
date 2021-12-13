@@ -13,6 +13,7 @@ import DelPokemonInfoModal from "./DelPokemonInfoModal";
 import Pages from "../Page";
 import { ListGroup } from 'react-bootstrap';
 import PokemonInfoDetailsModal from './PokemonInfoDetails';
+import { getPokemonTypesByNationalNum } from '../../api/PokemonTypeAPI';
 
 // The main tab for rendering pokemon information
 export function PokemonInfoTab(props) {
@@ -54,8 +55,20 @@ class PokemonInfoList extends React.Component {
     }
 
     componentDidMount() {
-        findAllPokemonInfo().then(pokeInfo => {
-            this.setState({pokemonInfo: pokeInfo})})
+        Promise.resolve(findAllPokemonInfo().then(pokeInfo => 
+            Promise.all(pokeInfo.map((pi) => 
+                getPokemonTypesByNationalNum(pi.pk).then( types => {   
+                        pi['types'] = [];
+                        for (const type of types) {
+                            pi['types'].push(type.fields.type);
+                        }
+                        return pi
+                    }
+                )
+            )).then(newPokeInfo => {
+                this.setState({pokemonInfo: newPokeInfo})
+            })
+        ))
     }
 
     findIndex(pk) {
