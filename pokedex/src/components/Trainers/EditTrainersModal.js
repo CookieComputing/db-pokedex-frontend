@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { formatReactDob, formatRealDob, parseDob } from '../utils/functions';
 const { useState, useEffect } = React;
 
 export default function EditModal({ show, handleClose, pokemonTrainer, handleEdit, pokemonTrainerIndex }) {
@@ -11,6 +12,12 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+    // This is a dob that is used by the bootstrap component to render
+    // dates
+    const [reactDob, setReactDob] = useState("")
+
+    // This is the date of birth used by the backend
+    const [realDob, setRealDob] = useState("")
 
     useEffect(() => {
         if (pokemonTrainer.length !== 0) {
@@ -23,6 +30,16 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
             setUsername(currTrainerFields.username)
             setPassword(currTrainerFields.password)
             setEmail(currTrainerFields.email)
+            
+            // Refer to backend API for formatting
+            // https://github.com/CookieComputing/db-pokedex-backend#trainer-api
+            var dob = new Date()
+            if (currTrainerFields.date_of_birth.length !== 0) {
+                dob = parseDob(currTrainerFields.date_of_birth)
+            }
+            
+            setReactDob(formatReactDob(dob))
+            setRealDob(formatRealDob(dob))
         }
     }, [pokemonTrainerIndex])
 
@@ -32,7 +49,8 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
         last_name,
         username,
         password,
-        email
+        email,
+        date_of_birth: realDob
     }
 
     return <>
@@ -71,6 +89,16 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} />
+                    <br />
+                    <Form.Label>Date of Birth</Form.Label>
+                    <Form.Control
+                        type="date"
+                        name="date_of_birth"
+                        value={reactDob}
+                        onChange={(e) => {
+                            const dateObj = parseDob(e.target.value);
+                            setReactDob(formatReactDob(dateObj));
+                            setRealDob(formatRealDob(dateObj))}} />
                 </Form >
             </Modal.Body >
             <Modal.Footer>
@@ -78,7 +106,7 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
                     Close
                 </Button>
                 <Button variant="primary" onClick={() => handleEdit(payload)}>
-                    Edit
+                    Save
                 </Button>
             </Modal.Footer>
         </Modal >
