@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { formatReactDob, formatRealDob, parseDob } from '../utils/functions';
 const { useState, useEffect } = React;
 
 export default function AddModal({ show, handleClose, handleSave }) {
@@ -10,15 +11,21 @@ export default function AddModal({ show, handleClose, handleSave }) {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+    // This is a dob that is used by the bootstrap component to render
+    // dates
+    const [reactDob, setReactDob] = useState("")
+
+    // This is the date of birth used by the backend
+    const [realDob, setRealDob] = useState("")
 
     let payload = {
         first_name,
         last_name,
         username,
         password,
-        email
+        email,
+        date_of_birth: realDob
     }
-
     return <>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -55,6 +62,16 @@ export default function AddModal({ show, handleClose, handleSave }) {
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} />
+                    <br />
+                    <Form.Label>Date of Birth</Form.Label>
+                    <Form.Control
+                        type="date"
+                        name="date_of_birth"
+                        value={reactDob}
+                        onChange={(e) => {
+                            const dateObj = parseDob(e.target.value);
+                            setReactDob(formatReactDob(dateObj));
+                            setRealDob(formatRealDob(dateObj))}} />
                 </Form >
             </Modal.Body >
             <Modal.Footer>
