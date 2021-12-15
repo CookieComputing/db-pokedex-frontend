@@ -79,7 +79,7 @@ class PokemonTrainersList extends React.Component {
                     <Badge variant="dark" className="btn-primary me-2 align-self-center" pill>
                         {pokeTrainer.pk}
                     </Badge>
-                    <Button className="me-2" onClick={() => {this.props.navigate(`/trainers/${pokeTrainer.pk}`)
+                    <Button className="me-2" onClick={() => {this.props.navigate(`${pokeTrainer.pk}`)
                     }}>Pokedexes</Button>
                     <Button className="me-2" onClick={() => {
                         this.setState({
