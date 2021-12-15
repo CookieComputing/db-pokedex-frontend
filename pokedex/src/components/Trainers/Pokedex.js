@@ -6,14 +6,27 @@ import { createPokedex, deletePokedex, findAllPokedexesById, updatePokedexById }
 import { findTrainerById } from "../../api/TrainerAPI";
 import Pages from "../Page";
 import {
+    Route,
+    Routes,
     useNavigate,
     useParams
   } from "react-router-dom";
 import EditPokedexModal from "./EditPokedexModal";
 import AddPokedexModal from "./AddPokedexModal";
 import DelPokedexModal from "./DelPokedexModal";
+import { PokedexEntry } from "./PokedexEntry";
 
-export function PokedexList() {
+export default function Pokedex() {
+    return (
+        <Routes>
+            <Route path='/' element={
+                <PokedexList />}>
+            </Route>
+            <Route path='/pokedex/:pokedexId' element={<PokedexEntry />} />
+        </Routes>)
+}
+
+function PokedexList() {
     const [trainer, setTrainer] = useState({})
     const [pokedexes, setPokedexes] = useState([])
     const [pokedexAddModal, setPokedexAddModal] = useState(false)
@@ -62,6 +75,9 @@ export function PokedexList() {
                     <div className="ms-2 me-auto">
                         <div className="fw-bold">{pokedex.fields.region}</div>
                     </div>
+                    <Button className="me-2" onClick={() => {
+                        navigate(`pokedex/${pokedex.pk}`)
+                    }}>Known Pokemon</Button>
                     <Button className="me-2" onClick={() => {
                         setPokedexIndex(index)
                         setPokedexEditModal(true)}
