@@ -16,6 +16,7 @@ import {
 import Pages from '../Page';
 import { useParams } from 'react-router-dom';
 import Pokedex from './Pokedex';
+import { Teams } from './Teams';
 
 export default function Trainers(props) {
     return (
@@ -25,6 +26,7 @@ export default function Trainers(props) {
             <PokemonTrainersListFunc editModalVisible={false}/>
         </Container>}>
         </Route>
+        <Route path="/teams/:trainerId/*" element={<Teams />}/>
         <Route path='/:trainerId/*' element={<Pokedex />} />
     </Routes>)
 }
