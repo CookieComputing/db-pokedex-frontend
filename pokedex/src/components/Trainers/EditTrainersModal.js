@@ -68,7 +68,7 @@ export default function EditModal({ show, handleClose, pokemonTrainer, handleEdi
                     <br />
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control
-                        placeholder="Enter First Name"
+                        placeholder="Enter Last Name"
                         value={last_name}
                         onChange={(e) => setLastName(e.target.value)} />
                     <br />

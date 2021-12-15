@@ -5,3 +5,4 @@ export const elemEnumType = ["normal", "fire", "water", "electric", "grass", "ic
 
 export const moveEnumType = ["physical", "special", "status"]
 
+export const regions = ["kanto", "johto", "hoenn", "sinnoh", "unova", "kalos", "alola", "galar"]
