@@ -1,5 +1,5 @@
 // Network API for accessing move data
-import { createResource, deleteResource, getResource, postResource, updateResource } from "./APIUtils";
+import { associate, createResource, deassociate, deleteResource, getResource, postResource, updateResource } from "./APIUtils";
 import { trainerPrefix } from "./APIUtils";
 var urljoin = require('url-join');
 
@@ -20,3 +20,9 @@ export const deletePokedex = (pokedexId) =>
 
 export const findAllPokemonInfoByPokedexId = (pokedexId) =>
     getResource(urljoin(trainerPrefix, pokedex, pokedex, pokedexId.toString()))
+
+export const associatePokemonInfoWithPokedex = (body) =>
+    postResource(urljoin(trainerPrefix, pokedex, associate), body)
+
+export const deassociatePokemonInfoWithPokedex = (body) =>
+    postResource(urljoin(trainerPrefix, pokedex, deassociate),  body)

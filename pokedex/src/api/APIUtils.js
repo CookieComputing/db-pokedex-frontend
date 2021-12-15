@@ -7,6 +7,8 @@ export const trainerPrefix = "/trainers/";
 export const createResource = "/create/";
 export const updateResource = "/update/";
 export const deleteResource = "/delete/";
+export const associate = "/associate/";
+export const deassociate = "/deassociate/";
 
 // httpEndpoint is the suffix after the host, e.g. the "/var/end/" suffix in "http://google.com/var/end/"
 export const getResource = (httpEndpoint) => 
