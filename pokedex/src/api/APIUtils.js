@@ -4,6 +4,7 @@ var urljoin = require('url-join');
 const host = "http://localhost:8000";
 
 export const trainerPrefix = "/trainers/";
+export const pokedex = "/pokedex/"
 export const createResource = "/create/";
 export const updateResource = "/update/";
 export const deleteResource = "/delete/";

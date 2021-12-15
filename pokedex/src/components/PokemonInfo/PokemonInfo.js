@@ -14,15 +14,22 @@ import Pages from "../Page";
 import { ListGroup } from 'react-bootstrap';
 import PokemonInfoDetailsModal from './PokemonInfoDetails';
 import { getPokemonTypesByNationalNum } from '../../api/PokemonTypeAPI';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { PokedexList } from './PokedexList';
 
 // The main tab for rendering pokemon information
 export function PokemonInfoTab(props) {
+    const navigate = useNavigate()
     return <div>
-        <Container>
-            <Row>
-                <Col><PokemonInfoList></PokemonInfoList></Col>
-            </Row>
-        </Container>
+        <Routes>
+            <Route path="/" element={
+                <Container>
+                    <Row>
+                        <Col><PokemonInfoList navigate={navigate}/></Col>
+                    </Row>
+                </Container>}/>
+            <Route path="/pokedexes/:pokemonInfoId" element={<PokedexList />} />
+        </Routes>
     </div>
 }
 
@@ -131,7 +138,8 @@ class PokemonInfoList extends React.Component {
             show={this.state.detailModalVisible}
             handleClose={() => this.setState({detailModalVisible: false})}
             pokemonInfo={this.state.pokemonInfo}
-            pokemonInfoIndex={this.findIndex(this.state.pokemonInfoIndex)} />
+            pokemonInfoIndex={this.findIndex(this.state.pokemonInfoIndex)}
+            navigate={this.props.navigate} />
     </div>
     }
 }
