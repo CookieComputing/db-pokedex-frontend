@@ -1,9 +1,7 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { createTrainer, findAllTrainers, updateTrainer, deleteTrainer } from '../../api/TrainerAPI';
 import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button';
 import AddTrainersModal from "./AddTrainersModal";
@@ -85,6 +83,8 @@ class PokemonTrainersList extends React.Component {
                     <Badge variant="dark" className="btn-primary me-2 align-self-center" pill>
                         {pokeTrainer.pk}
                     </Badge>
+                    <Button className="me-2" onClick={() => {this.props.navigate(`teams/${pokeTrainer.pk}`)
+                    }}>Teams</Button>
                     <Button className="me-2" onClick={() => {this.props.navigate(`${pokeTrainer.pk}`)
                     }}>Pokedexes</Button>
                     <Button className="me-2" onClick={() => {

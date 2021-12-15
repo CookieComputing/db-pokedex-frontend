@@ -62,7 +62,7 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
                     <>
                     <b>Types: </b>
                     <ul>
-                        {pokemonTypes.map((type) => <li>{type}</li>)}
+                        {pokemonTypes.map((type, index) => <li key={index}>{type}</li>)}
                     </ul>
                     </>}
                 Photo: <Image src={photoUrl} fluid />
