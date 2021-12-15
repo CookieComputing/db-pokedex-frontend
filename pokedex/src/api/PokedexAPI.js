@@ -17,3 +17,6 @@ export const updatePokedexById = (pokedexId, body) =>
 
 export const deletePokedex = (pokedexId) =>
     postResource(urljoin(trainerPrefix, pokedex, deleteResource, pokedexId.toString()) + "/", {});
+
+export const findAllPokemonInfoByPokedexId = (pokedexId) =>
+    getResource(urljoin(trainerPrefix, pokedex, pokedex, pokedexId.toString()))

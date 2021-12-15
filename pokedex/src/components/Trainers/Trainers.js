@@ -16,8 +16,8 @@ import {
     useNavigate
   } from "react-router-dom";
 import Pages from '../Page';
-import { PokedexList } from './Pokedex';
 import { useParams } from 'react-router-dom';
+import Pokedex from './Pokedex';
 
 export default function Trainers(props) {
     return (
@@ -27,7 +27,7 @@ export default function Trainers(props) {
             <PokemonTrainersListFunc editModalVisible={false}/>
         </Container>}>
         </Route>
-        <Route path='/:trainerId' element={<PokedexList />} />
+        <Route path='/:trainerId/*' element={<Pokedex />} />
     </Routes>)
 }
 
