@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, ListGroup } from "react-bootstrap";
-import { findAllPokemonInfoByPokedexId } from "../../api/PokedexAPI";
+import { associatePokemonInfoWithPokedex, deassociatePokemonInfoWithPokedex, findAllPokemonInfoByPokedexId } from "../../api/PokedexAPI";
 import Pages from "../Page";
 import {
     useNavigate,
@@ -10,18 +10,33 @@ import {
   } from "react-router-dom";
 import { findAllPokemonInfo, updatePokemonInfo } from "../../api/PokemonInfoAPI";
 import EditModal from "../PokemonInfo/EditPokemonInfoModal";
+import DeassocPokedexPokeInfoModal from "./DeassociatePokedexPokemonInfoModal";
+import AssocPokedexModal from "./AssocPokedexModal";
 
 export function PokedexEntry() {
     const [pokemonInfo, setPokemonInfo] = useState([])
     const [pokemonInfoEditModal, setPokemonInfoEditModal] = useState(false)
     const [pokemonInfoIndex, setPokemonInfoIndex] = useState(-1)
     const [allPokemonInfo, setAllPokemonInfo] = useState([])
+    const [deassocModal, setDeassocModal] = useState(false)
+    const [deassocPokeInfoId, setDeassocPokeInfoId] = useState(-1)
+    const [assocModal, setAssocModal] = useState(false)
 
     let navigate = useNavigate();
     let { pokedexId } = useParams();
 
     const handlePokemonInfoEdit = async (id, payload) => {
         await updatePokemonInfo(id, payload)
+        window.location.reload()
+    }
+
+    const handlePokemonInfoDeassoc = async(payload) => {
+        await deassociatePokemonInfoWithPokedex(payload)
+        window.location.reload()
+    }
+    
+    const handlePokemonInfoAssoc = async(payload) => {
+        await associatePokemonInfoWithPokedex(payload)
         window.location.reload()
     }
 
@@ -56,6 +71,10 @@ export function PokedexEntry() {
                         setPokemonInfoIndex(allPokemonInfo.findIndex((pokeInfo) => pokeInfo.pk === pokemonInfo.pk))
                         setPokemonInfoEditModal(true)}
                     }>Edit</Button>
+                    <Button className="danger" onClick={() => {
+                        setDeassocPokeInfoId(pokemonInfo.pk)
+                        setDeassocModal(true)
+                    }}>Remove from Pokedex</Button>
                 </ListGroup.Item>
             } />
             </>
@@ -65,6 +84,16 @@ export function PokedexEntry() {
                         pokemonInfo={allPokemonInfo}
                         handleEdit={handlePokemonInfoEdit}
                         pokemonInfoIndex={pokemonInfoIndex}/>
+        <AssocPokedexModal show={assocModal}
+                        handleClose={() => {setAssocModal(false)}}
+                        handleAssoc={handlePokemonInfoAssoc}
+                        pokedexId={pokedexId} />
+        <DeassocPokedexPokeInfoModal show={deassocModal}
+                        handleClose={() => {setDeassocModal(false)}}
+                        handleDeassoc={handlePokemonInfoDeassoc}
+                        pokedexId={pokedexId}
+                        pokemonInfoId={deassocPokeInfoId} />
+        <Button className="me-2" onClick={() => setAssocModal(true)}>Add Pokemon to Pokedex</Button>
         <Button className="me-2" onClick={() => navigate(-1)}>Back</Button>
     </div>
 }
