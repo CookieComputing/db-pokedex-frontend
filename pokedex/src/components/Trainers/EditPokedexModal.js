@@ -2,8 +2,10 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { findAllTrainers } from '../../api/TrainerAPI';
+import { findAllTrainers, updateTrainer } from '../../api/TrainerAPI';
 import { regions } from '../utils/Types';
+import { useNavigate } from 'react-router-dom';
+import EditModal from './EditTrainersModal';
 const { useState, useEffect } = React;
 
 export default function EditPokedexModal({ show, handleClose, pokedexes, handleEdit, pokedexIndex }) {
@@ -11,6 +13,7 @@ export default function EditPokedexModal({ show, handleClose, pokedexes, handleE
     const [region, setRegion] = useState("")
     const [trainers, setTrainers] = useState([])
     const [pokedexId, setPokedexId] = useState(0)
+    const [showTrainerModal, setShowTrainerModal] = useState(false)
 
     useEffect(() => {
         if (pokedexes.length !== 0) {
@@ -25,6 +28,11 @@ export default function EditPokedexModal({ show, handleClose, pokedexes, handleE
     useEffect(() => {
         findAllTrainers().then(trainers => setTrainers(trainers))
     }, [pokedexIndex])
+
+    const handleTrainerEdit = async (payload) => {
+        await updateTrainer(payload);
+        window.location.reload();
+    }
 
     let payload = {
         trainer: trainerId,
@@ -66,7 +74,17 @@ export default function EditPokedexModal({ show, handleClose, pokedexes, handleE
                 <Button variant="primary" onClick={() => {handleEdit(pokedexId, payload)}}>
                     Save
                 </Button>
+                <Button variant="primary" onClick={() => {
+                    setShowTrainerModal(true)
+                }}>
+                    Edit Trainer
+                </Button>
             </Modal.Footer>
         </Modal >
+        <EditModal show={showTrainerModal}
+                handleClose={() => setShowTrainerModal(false)}
+                pokemonTrainer={trainers}
+                handleEdit={handleTrainerEdit}
+                pokemonTrainerIndex={(trainers.length === 0) ? -1 : trainers.findIndex((trainer) => trainer.pk === trainerId)} />
     </>
 }

@@ -28,19 +28,13 @@ export default function Trainers(props) {
         </Container>}>
         </Route>
         <Route path='/:trainerId' element={<PokedexList />} />
-        <Route path='/:trainerId/edit' element={<PokemonTrainersListFunc editModalVisible={true} />} />
     </Routes>)
 }
 
 // A make-shift function component to get around React Router's limitations with class components
 function PokemonTrainersListFunc(props) {
     let navigate = useNavigate();
-    let trainerIndex = 0;
-    let {trainerId} = useParams();
-    if (props.initialEditVisible) {
-        trainerIndex = trainerId;
-    }
-    return <PokemonTrainersList trainerIndex={trainerIndex} editModalVisible={props.editModalVisible} navigate={navigate}/>
+    return <PokemonTrainersList navigate={navigate}/>
 }
 
 class PokemonTrainersList extends React.Component {
@@ -48,9 +42,9 @@ class PokemonTrainersList extends React.Component {
         super(props);
         this.state = {
             pokemonTrainer: [],
-            pokemonTrainerIndex: this.props.trainerIndex,
+            pokemonTrainerId: -1,
             addModalVisible: false,
-            editModalVisible: this.props.editModalVisible,
+            editModalVisible: false,
             delModalVisible: false
         }
     }
@@ -95,13 +89,13 @@ class PokemonTrainersList extends React.Component {
                     }}>Pokedexes</Button>
                     <Button className="me-2" onClick={() => {
                         this.setState({
-                            pokemonTrainerIndex: pokeTrainer.pk,
+                            pokemonTrainerId: pokeTrainer.pk,
                             editModalVisible: true
                         })
                     }}>Edit</Button>
                     <Button variant="danger" onClick={() => {
                         this.setState({
-                            pokemonTrainerIndex: pokeTrainer.pk,
+                            pokemonTrainerId: pokeTrainer.pk,
                             delModalVisible: true
                         })
                     }}>Delete</Button>
@@ -118,12 +112,12 @@ class PokemonTrainersList extends React.Component {
             handleClose={() => this.setState({editModalVisible: false})}
             pokemonTrainer={this.state.pokemonTrainer}
             handleEdit={this.handleEdit}
-            pokemonTrainerIndex={this.findIndex(this.state.pokemonTrainerIndex)} />
+            pokemonTrainerIndex={this.findIndex(this.state.pokemonTrainerId)} />
         <DelTrainersModal
             show={this.state.delModalVisible}
             handleClose={() => this.setState({delModalVisible: false})}
             handleDel={this.handleDel}
-            primary_key={this.state.pokemonTrainer[this.findIndex(this.state.pokemonTrainerIndex)]?.pk} />
+            primary_key={this.state.pokemonTrainer[this.findIndex(this.state.pokemonTrainerId)]?.pk} />
         </div>
     }
 }
