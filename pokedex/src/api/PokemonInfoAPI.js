@@ -1,8 +1,9 @@
 // Network API to retrieve pokemon information
-import { getResource, postResource } from "./APIUtils";
+import { getResource, pokedex, postResource, trainerPrefix } from "./APIUtils";
 var urljoin = require('url-join');
 
 const pokemonInfoPrefix = "/pokemon/pokemon_info/";
+const pokemonInfo = "/pokemon_info";
 
 export const findAllPokemonInfo = () =>
     getResource(pokemonInfoPrefix);
@@ -18,5 +19,8 @@ export const updatePokemonInfo = (pokemonInfo) => {
 }
 
 export const delPokemonInfo = ({ national_num }) => {
-    postResource(urljoin(pokemonInfoPrefix, "delete/", national_num.toString(), "/"))
+    postResource(urljoin(pokemonInfoPrefix, "delete/", national_num.toString(), "/"), {})
 }
+
+export const getPokedexesByPokemonInfo = (pokemonInfoId) =>
+    getResource(urljoin(trainerPrefix, pokedex, pokemonInfo, pokemonInfoId.toString(), "/"))

@@ -103,7 +103,7 @@ function PokedexList() {
                         handleClose={() => {setPokedexDelModal(false)}}
                         handleDel={handleDel}
                         primary_key={pokedexes[pokedexIndex]?.pk} />
-        <Button classNamme="me-2" onClick={() => setPokedexAddModal(true)}>Add</Button>
+        <Button className="me-2" onClick={() => setPokedexAddModal(true)}>Add</Button>
         <Button className="me-2" onClick={() => navigate(-1)}>Back</Button>
     </div>
 }

@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { Image } from 'react-bootstrap';
 const { useState, useEffect } = React;
 
-export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo, pokemonInfoIndex }) {
+export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo, pokemonInfoIndex, navigate }) {
     const [nationalNumber, setNationalNumber] = useState("")
     const [name, setName] = useState("")
     const [photoUrl, setPhotoUrl] = useState("")
@@ -68,6 +68,7 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
                 Photo: <Image src={photoUrl} fluid />
             </Modal.Body>
             <Modal.Footer>
+                <Button variant="primary" onClick={() => navigate(`pokedexes/${nationalNumber}`)}>Pokedexes tracking this Pokemon</Button>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>

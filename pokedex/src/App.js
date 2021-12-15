@@ -54,7 +54,7 @@ function App() {
             renders the first one that matches the current URL. */}
           <Routes>
             <Route path="/" exact element={<Home />} />
-            <Route path="/pokemonInfo" exact element={<PokemonInfoTab />} />
+            <Route path="/pokemonInfo/*" element={<PokemonInfoTab />} />
             <Route path="/trainers/*" element={<Trainers />} />
             <Route path="/moves" exact element={<Moves />}>
             </Route>
