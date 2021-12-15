@@ -2,6 +2,8 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { applyPokemonType, getPokemonTypesByNationalNum } from '../../api/PokemonTypeAPI';
+import { elemEnumType } from '../utils/Types';
 const { useState, useEffect } = React;
 // TODO: Fix devolve and evolve later
 
@@ -12,6 +14,7 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
     const [description, setDescription] = useState("")
     const [devolvedState, setDevolvedState] = useState("")
     const [evolvedState, setEvolvedState] = useState("")
+    const [pokemonTypes, setPokemonTypes] = useState([])
 
     useEffect(() => {
         if (pokemonInfo.length !== 0) {
@@ -33,6 +36,15 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
             setName(currInfoFields.name)
             setPhotoUrl(currInfoFields.photo_url)
             setDescription(currInfoFields.description)
+        }
+    }, [pokemonInfoIndex])
+
+    useEffect(() => {
+        if (pokemonInfo.length !== 0) {
+            let currInfo = pokemonInfo[pokemonInfoIndex]
+            getPokemonTypesByNationalNum(currInfo.pk).then(types =>
+                setPokemonTypes(types.map((type) => type.fields.type))
+            )
         }
     }, [pokemonInfoIndex])
 
@@ -77,10 +89,10 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
                     <Form.Select
                         value={devolvedState}
                         onChange={(e) => setDevolvedState(e.target.value)}>
-                        <option>Select</option>
-                        {pokemonInfo.map((info) => {
+                        <option key="devolve-select">Select</option>
+                        {pokemonInfo.map((info, index ) => {
                             if (info.pk !== nationalNumber) {
-                                return <option key={info.pk}>{info.pk} {info.fields.name}</option>
+                                return <option key={`devolve-${index}`}>{info.pk} {info.fields.name}</option>
                             }
                         })}
                     </Form.Select>
@@ -89,20 +101,51 @@ export default function EditModal({ show, handleClose, pokemonInfo, handleEdit, 
                     <Form.Select
                         value={evolvedState}
                         onChange={(e) => setEvolvedState(e.target.value)}>
-                        <option>Select</option>
-                        {pokemonInfo.map((info) => {
+                        <option key="evolve-select">Select</option>
+                        {pokemonInfo.map((info, index) => {
                             if (info.pk !== nationalNumber) {
-                                return <option key={info.pk}>{info.pk} {info.fields.name}</option>
+                                return <option key={`evolve-${index}`}>{info.pk} {info.fields.name}</option>
                             }
                         })}
                     </Form.Select>
+                    <br />
+                    <Form.Label>Pokemon types</Form.Label>
+                    {
+                        (pokemonTypes.length === 0) ? <br /> :
+                        pokemonTypes.map((type, index) => {
+                            return <>
+                            <Form.Select
+                                key={`type-${index}`}
+                                value={type}
+                                onChange={(e) => {
+                                    const typeCopy = [...pokemonTypes];
+                                    typeCopy[index] = e.target.value;
+                                    setPokemonTypes(typeCopy)}}>
+                                <option key={`type-normal`}>Select</option>
+                                {elemEnumType.map((elemType, elemIndex) =>
+                                    <option key={`${elemType}-${elemIndex.toString()}-${index}`}>{elemType}</option>)}
+                            </Form.Select>
+                            <br />
+                            </>
+                        })
+                    }
+                    <Button variant="primary" onClick={() => {
+                        const typeCopy = [...pokemonTypes];
+                        typeCopy.push("Select")
+                        setPokemonTypes(typeCopy)
+                    }}>Add entry</Button>
+                    <Button variant="primary" onClick={() => {
+                        const typeCopy = [...pokemonTypes];
+                        typeCopy.pop()
+                        setPokemonTypes(typeCopy)
+                    }}>Remove last entry</Button>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => handleEdit(payload)}>
+                <Button variant="primary" onClick={() => {handleEdit(payload); applyPokemonType(nationalNumber, pokemonTypes)}}>
                     Edit
                 </Button>
             </Modal.Footer>

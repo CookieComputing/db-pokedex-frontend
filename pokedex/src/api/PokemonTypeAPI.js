@@ -23,3 +23,7 @@ export const updatePokemonType = (nationalNum, type) => {
 export const deletePokemonType = (nationalNum, type) => {
     postResource(urljoin(pokemonInfoTypePrefix, "delete/", nationalNum.toString(), type, "/"));
 }
+
+export const applyPokemonType = (nationalNum, types) => {
+    postResource(urljoin(pokemonInfoTypePrefix, "apply/", nationalNum.toString(), "/"), {types: types})
+}
