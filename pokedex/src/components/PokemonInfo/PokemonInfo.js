@@ -16,6 +16,7 @@ import PokemonInfoDetailsModal from './PokemonInfoDetails';
 import { getPokemonTypesByNationalNum } from '../../api/PokemonTypeAPI';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { PokedexList } from './PokedexList';
+import { MoveList } from './MoveEntryInfo/MoveList';
 
 // The main tab for rendering pokemon information
 export function PokemonInfoTab(props) {
@@ -29,6 +30,7 @@ export function PokemonInfoTab(props) {
                     </Row>
                 </Container>}/>
             <Route path="/pokedexes/:pokemonInfoId" element={<PokedexList />} />
+            <Route path="/moves/:pokemonInfoId" element={<MoveList />} />
         </Routes>
     </div>
 }
@@ -97,6 +99,9 @@ class PokemonInfoList extends React.Component {
                         <Badge variant="dark" className="btn-primary me-2 align-self-center" pill>
                             {pokeInfo.pk}
                         </Badge>
+                        <Button className="me-2" onClick={() => {
+                            this.props.navigate(`moves/${pokeInfo.pk}`)
+                        }}>Moves</Button>
                         <Button className="me-2" onClick={() => {
                             this.setState({
                                 pokemonInfoIndex: pokeInfo.pk,

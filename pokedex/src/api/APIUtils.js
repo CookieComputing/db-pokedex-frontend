@@ -6,6 +6,7 @@ const host = "http://localhost:8000";
 export const trainerPrefix = "/trainers/";
 export const pokedex = "/pokedex/"
 export const teams = "/teams/"
+export const pokemon = "/pokemon/";
 export const createResource = "/create/";
 export const updateResource = "/update/";
 export const deleteResource = "/delete/";
