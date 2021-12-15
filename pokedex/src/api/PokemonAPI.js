@@ -1,8 +1,6 @@
 // Network API to retrieve pokemon information
-import { createResource, deleteResource, getResource, pokedex, postResource, teams, trainerPrefix, updateResource } from "./APIUtils";
+import { createResource, deleteResource, getResource, pokedex, pokemon, postResource, teams, trainerPrefix, updateResource } from "./APIUtils";
 var urljoin = require('url-join');
-
-const pokemon = "/pokemon/"
 
 export const getAllPokemon = () =>
     getResource(urljoin(trainerPrefix, teams, pokemon));

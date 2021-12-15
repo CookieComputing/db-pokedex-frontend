@@ -18,8 +18,8 @@ export const createMove = (moveData) =>
     postResource(urljoin(movePrefix, createResource) + "/", moveData);
 
 export const updateMove = (id, newMoveData) =>{
-    return postResource(urljoin(movePrefix, updateResource, id) + "/", newMoveData);
+    return postResource(urljoin(movePrefix, updateResource, id.toString()) + "/", newMoveData);
 }
 
 export const deleteMove = (id) =>
-    postResource(urljoin(movePrefix, deleteResource, id) + "/", {});
+    postResource(urljoin(movePrefix, deleteResource, id.toString()) + "/", {});
