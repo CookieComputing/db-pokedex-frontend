@@ -1,12 +1,7 @@
 // Network API for accessing move data
 import { getResource, postResource } from "./APIUtils";
+import { trainerPrefix, createResource, updateResource, deleteResource } from "./APIUtils";
 var urljoin = require('url-join');
-
-
-const trainerPrefix = "/trainers/";
-const createResource = "/create/";
-const updateResource = "/update/";
-const deleteResource = "/delete/";
 
 export const findAllTrainers = () =>
     getResource(trainerPrefix);

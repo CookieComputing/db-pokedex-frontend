@@ -3,6 +3,11 @@ var urljoin = require('url-join');
 
 const host = "http://localhost:8000";
 
+export const trainerPrefix = "/trainers/";
+export const createResource = "/create/";
+export const updateResource = "/update/";
+export const deleteResource = "/delete/";
+
 // httpEndpoint is the suffix after the host, e.g. the "/var/end/" suffix in "http://google.com/var/end/"
 export const getResource = (httpEndpoint) => 
     fetch(urljoin(host, httpEndpoint), {
