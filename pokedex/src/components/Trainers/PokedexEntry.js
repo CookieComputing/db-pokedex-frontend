@@ -8,13 +8,14 @@ import {
     useNavigate,
     useParams
   } from "react-router-dom";
-import { updatePokemonInfo } from "../../api/PokemonInfoAPI";
+import { findAllPokemonInfo, updatePokemonInfo } from "../../api/PokemonInfoAPI";
 import EditModal from "../PokemonInfo/EditPokemonInfoModal";
 
 export function PokedexEntry() {
     const [pokemonInfo, setPokemonInfo] = useState([])
     const [pokemonInfoEditModal, setPokemonInfoEditModal] = useState(false)
     const [pokemonInfoIndex, setPokemonInfoIndex] = useState(-1)
+    const [allPokemonInfo, setAllPokemonInfo] = useState([])
 
     let navigate = useNavigate();
     let { pokedexId } = useParams();
@@ -28,6 +29,12 @@ export function PokedexEntry() {
         if (pokedexId !== undefined) {
             findAllPokemonInfoByPokedexId(parseInt(pokedexId, 10))
                 .then(pokemonInfo => {setPokemonInfo(pokemonInfo)})
+        }
+    }, [pokedexId])
+
+    useEffect(() => {
+        if (pokedexId !== undefined) {
+            findAllPokemonInfo().then(pokemonInfo => {setAllPokemonInfo(pokemonInfo)})
         }
     }, [pokedexId])
 
@@ -46,7 +53,7 @@ export function PokedexEntry() {
                         <div className="fw-bold">{pokemonInfo.fields.name}</div>
                     </div>
                     <Button className="me-2" onClick={() => {
-                        setPokemonInfoIndex(index)
+                        setPokemonInfoIndex(allPokemonInfo.findIndex((pokeInfo) => pokeInfo.pk === pokemonInfo.pk))
                         setPokemonInfoEditModal(true)}
                     }>Edit</Button>
                 </ListGroup.Item>
@@ -55,7 +62,7 @@ export function PokedexEntry() {
         }
         <EditModal show={pokemonInfoEditModal}
                         handleClose={() => {setPokemonInfoEditModal(false)}}
-                        pokemonInfo={pokemonInfo}
+                        pokemonInfo={allPokemonInfo}
                         handleEdit={handlePokemonInfoEdit}
                         pokemonInfoIndex={pokemonInfoIndex}/>
         <Button className="me-2" onClick={() => navigate(-1)}>Back</Button>
