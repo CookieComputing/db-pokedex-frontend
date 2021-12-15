@@ -2,20 +2,42 @@
 
 import { useEffect, useState } from "react";
 import { Button, ListGroup } from "react-bootstrap";
-import { findAllPokedexesById } from "../../api/PokedexAPI";
+import { createPokedex, deletePokedex, findAllPokedexesById, updatePokedexById } from "../../api/PokedexAPI";
 import { findTrainerById } from "../../api/TrainerAPI";
 import Pages from "../Page";
 import {
     useNavigate,
     useParams
   } from "react-router-dom";
+import EditPokedexModal from "./EditPokedexModal";
+import AddPokedexModal from "./AddPokedexModal";
+import DelPokedexModal from "./DelPokedexModal";
 
 export function PokedexList() {
     const [trainer, setTrainer] = useState({})
     const [pokedexes, setPokedexes] = useState([])
+    const [pokedexAddModal, setPokedexAddModal] = useState(false)
+    const [pokedexEditModal, setPokedexEditModal] = useState(false)
+    const [pokedexDelModal, setPokedexDelModal] = useState(false)
+    const [pokedexIndex, setPokedexIndex] = useState(-1)
 
     let navigate = useNavigate();
     let { trainerId } = useParams();
+
+    const handleEdit = async (id, payload) => {
+        await updatePokedexById(id, payload)
+        window.location.reload()
+    }
+
+    const handleSave = async (payload) => {
+        await createPokedex(payload)
+        window.location.reload()
+    }
+
+    const handleDel = async (primary_key) => {
+        await deletePokedex(primary_key);
+        window.location.reload()
+    }
 
     useEffect(() => {
         if (trainerId !== undefined) {
@@ -40,11 +62,32 @@ export function PokedexList() {
                     <div className="ms-2 me-auto">
                         <div className="fw-bold">{pokedex.fields.region}</div>
                     </div>
-                    <Button className="me-2">Details</Button>
+                    <Button className="me-2" onClick={() => {
+                        setPokedexIndex(index)
+                        setPokedexEditModal(true)}
+                    }>Edit</Button>
+                    <Button className="me-2" onClick={() => {
+                        setPokedexIndex(index)
+                        setPokedexDelModal(true)}
+                    }>Delete</Button>
                 </ListGroup.Item>
             } />
             </>
         }
+        <AddPokedexModal show={pokedexAddModal}
+                        handleClose={() => {setPokedexAddModal(false)}}
+                        handleSave={handleSave}
+                        trainerId={trainer.pk}/>
+        <EditPokedexModal show={pokedexEditModal} 
+                        handleClose={() => {setPokedexEditModal(false)}} 
+                        pokedexes={pokedexes}
+                        handleEdit={handleEdit}
+                        pokedexIndex={pokedexIndex}/>
+        <DelPokedexModal show={pokedexDelModal}
+                        handleClose={() => {setPokedexDelModal(false)}}
+                        handleDel={handleDel}
+                        primary_key={pokedexes[pokedexIndex]?.pk} />
+        <Button classNamme="me-2" onClick={() => setPokedexAddModal(true)}>Add</Button>
         <Button className="me-2" onClick={() => navigate(-1)}>Back</Button>
     </div>
 }

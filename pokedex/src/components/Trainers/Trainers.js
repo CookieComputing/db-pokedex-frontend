@@ -17,18 +17,30 @@ import {
   } from "react-router-dom";
 import Pages from '../Page';
 import { PokedexList } from './Pokedex';
+import { useParams } from 'react-router-dom';
 
 export default function Trainers(props) {
-    let navigate = useNavigate();
     return (
     <Routes>
         <Route path='/' element={
         <Container>
-            <PokemonTrainersList navigate={navigate}/>
+            <PokemonTrainersListFunc editModalVisible={false}/>
         </Container>}>
         </Route>
         <Route path='/:trainerId' element={<PokedexList />} />
+        <Route path='/:trainerId/edit' element={<PokemonTrainersListFunc editModalVisible={true} />} />
     </Routes>)
+}
+
+// A make-shift function component to get around React Router's limitations with class components
+function PokemonTrainersListFunc(props) {
+    let navigate = useNavigate();
+    let trainerIndex = 0;
+    let {trainerId} = useParams();
+    if (props.initialEditVisible) {
+        trainerIndex = trainerId;
+    }
+    return <PokemonTrainersList trainerIndex={trainerIndex} editModalVisible={props.editModalVisible} navigate={navigate}/>
 }
 
 class PokemonTrainersList extends React.Component {
@@ -36,9 +48,9 @@ class PokemonTrainersList extends React.Component {
         super(props);
         this.state = {
             pokemonTrainer: [],
-            pokemonTrainerIndex: 0,
+            pokemonTrainerIndex: this.props.trainerIndex,
             addModalVisible: false,
-            editModalVisible: false,
+            editModalVisible: this.props.editModalVisible,
             delModalVisible: false
         }
     }
