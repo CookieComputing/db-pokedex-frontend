@@ -3,20 +3,42 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { getPokemonByTeamId } from "../../../api/PokemonAPI";
+import { createPokemon, deletePokemon, getPokemonByTeamId, updatePokemon } from "../../../api/PokemonAPI";
 import { findAllPokemonInfo } from "../../../api/PokemonInfoAPI";
 import { getPokemonTypesByNationalNum } from "../../../api/PokemonTypeAPI";
 import Pages from "../../Page";
 import PokemonInfoDetailsModal from "../../PokemonInfo/PokemonInfoDetails";
+import AddPokemonModal from "./AddPokemonModal";
+import DelPokemonModal from "./DelPokemonModal";
+import EditPokemonModal from "./EditPokemonModal";
 
 export default function PokemonList(props) {
     const [pokemon, setPokemon] = useState([])
+    const [pokemonIndex, setPokemonIndex] = useState(-1)
     const [pokemonDetailsModal, setPokemonDetailsModal] = useState(false)
     const [pokemonInfo, setPokemonInfo] = useState([])
     const [pokemonInfoIndex, setPokemonInfoIndex] = useState(-1)
-    
+    const [pokemonAddModal, setPokemonAddModal] = useState(false)
+    const [pokemonEditModal, setPokemonEditModal] = useState(false)
+    const [pokemonDelModal, setPokemonDelModal] = useState(false)
+
     let { teamId } = useParams()
     let navigate = useNavigate()
+
+    const handleSave = async (payload) => {
+        await createPokemon(payload);
+        window.location.reload()
+    }
+
+    const handleEdit = async (pokemonId, payload) => {
+        await updatePokemon(pokemonId, payload);
+        window.location.reload()
+    }
+
+    const handleDel = async (payload) => {
+        await deletePokemon(payload.pokemonId.toString());
+        window.location.reload()
+    }
 
     useEffect(() => {
         if (teamId !== undefined) {
@@ -63,6 +85,14 @@ export default function PokemonList(props) {
                     setPokemonInfoIndex(pokemonInfo.findIndex(pokeInfo => pokeInfo.pk === poke.fields.pokemon_info))
                     setPokemonDetailsModal(true)
                 }}>Information</Button>
+                <Button className="me-2" onClick={() => {
+                    setPokemonIndex(index)
+                    setPokemonEditModal(true)
+                }}>Edit</Button>
+                <Button className="danger" onClick={() => {
+                    setPokemonIndex(index)
+                    setPokemonDelModal(true)
+                }}>Delete</Button>
             </ListGroup.Item>
         } />
         </>
@@ -72,9 +102,20 @@ export default function PokemonList(props) {
                         pokemonInfo={pokemonInfo}
                         pokemonInfoIndex={pokemonInfoIndex}
                         navigate={navigate}/>
+    <AddPokemonModal show={pokemonAddModal}
+                handleClose={() => {setPokemonAddModal(false)}}
+                handleSave={handleSave}
+                teamId={teamId} />
+    <EditPokemonModal show={pokemonEditModal}
+                handleClose={() => {setPokemonEditModal(false)}}
+                handleEdit={handleEdit}
+                pokemon={pokemon}
+                pokemonIndex={pokemonIndex} />
+    <DelPokemonModal show={pokemonDelModal}
+                handleClose={() => {setPokemonDelModal(false)}}
+                handleDel={handleDel}
+                pokemonId={pokemon[pokemonIndex]?.pk} />
+    <Button className="me-2" onClick={() => setPokemonAddModal(true)}>Add a Pokemon</Button>
     <Button className="me-2" onClick={() => navigate(-1)}>Back</Button>
     </div>
 }
-
-// export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo, pokemonInfoIndex, navigate }) {
-//     const [nationalNumber, setNationalNumber] = useState("")

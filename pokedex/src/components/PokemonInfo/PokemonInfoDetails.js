@@ -41,6 +41,7 @@ export default function PokemonInfoDetailsModal({ show, handleClose, pokemonInfo
             setPhotoUrl(currInfoFields.photo_url)
             setDescription(currInfoFields.description)
             // Note: You need to specially augment the types here, see PokemonInfo
+            // TODO: This component should be responsible for these changes instead of outer components
             setPokemonTypes(currInfo.types)
             
         }
