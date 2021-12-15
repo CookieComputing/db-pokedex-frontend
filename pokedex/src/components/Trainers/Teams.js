@@ -5,6 +5,8 @@ import { Button, ListGroup } from "react-bootstrap";
 import { findTrainerById } from "../../api/TrainerAPI";
 import Pages from "../Page";
 import {
+    Route,
+    Routes,
     useNavigate,
     useParams
   } from "react-router-dom";
@@ -12,8 +14,18 @@ import { createTeam, deleteTeam, findAllTeamsByTrainerId, updateTeamById } from 
 import AddTeamsModal from "./AddTeamsModal";
 import EditTeamsModal from "./EditTeamsModal";
 import DelTeamsModal from "./DelTeamsModal";
+import PokemonList from "./Pokemon/Pokemon";
 
 export function Teams() {
+    return (
+        <Routes>
+            <Route path="/" element={<TeamsList />} />
+            <Route path="/team/:teamId" element={<PokemonList />} />
+        </Routes>
+    )
+}
+
+export function TeamsList() {
     const [trainer, setTrainer] = useState({})
     const [teams, setTeams] = useState([])
     const [teamsAddModal, setTeamsAddModal] = useState(false)
@@ -62,6 +74,9 @@ export function Teams() {
                     <div className="ms-2 me-auto">
                         <div className="fw-bold">{team.fields.name}</div>
                     </div>
+                    <Button className="me-2" onClick={() => {
+                        navigate(`team/${team.pk}`)}
+                    }>Pokemon Roster</Button>
                     <Button className="me-2" onClick={() => {
                         setTeamsIndex(index)
                         setTeamsEditModal(true)}
