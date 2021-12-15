@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { createTrainer, findAllTrainers, updateTrainer, deleteTrainer } from '../../api/TrainerAPI';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col'
@@ -9,16 +9,26 @@ import Button from 'react-bootstrap/Button';
 import AddTrainersModal from "./AddTrainersModal";
 import EditTrainersModal from "./EditTrainersModal";
 import DelTrainersModal from "./DelTrainersModal";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    useNavigate
+  } from "react-router-dom";
 import Pages from '../Page';
+import { PokedexList } from './Pokedex';
 
 export default function Trainers(props) {
-    return <div>
+    let navigate = useNavigate();
+    return (
+    <Routes>
+        <Route path='/' element={
         <Container>
-            <Row>
-                <Col><PokemonTrainersList></PokemonTrainersList></Col>
-            </Row>
-        </Container>
-    </div>
+            <PokemonTrainersList navigate={navigate}/>
+        </Container>}>
+        </Route>
+        <Route path='/:trainerId' element={<PokedexList />} />
+    </Routes>)
 }
 
 class PokemonTrainersList extends React.Component {
@@ -69,6 +79,8 @@ class PokemonTrainersList extends React.Component {
                     <Badge variant="dark" className="btn-primary me-2 align-self-center" pill>
                         {pokeTrainer.pk}
                     </Badge>
+                    <Button className="me-2" onClick={() => {this.props.navigate(`/trainers/${pokeTrainer.pk}`)
+                    }}>Pokedexes</Button>
                     <Button className="me-2" onClick={() => {
                         this.setState({
                             pokemonTrainerIndex: pokeTrainer.pk,

@@ -4,7 +4,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import logo from './pokeball.png'
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link
 } from "react-router-dom";
@@ -33,10 +33,18 @@ function App() {
               </Navbar.Brand>
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
-                  <Link to="/" component={Nav.Link}>Home</Link>
-                  <Link to="/pokemonInfo" component={Nav.Link}>Pokemon Info</Link>
-                  <Link to="/trainers" component={Nav.Link}>Trainers</Link>
-                  <Link to="/moves" component={Nav.Link}>Pokemon Moves</Link>
+                  <Nav.Item>
+                    <Nav.Link href="/">Home</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/pokemonInfo">Pokemon Info</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/trainers">Trainers</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/moves">Moves</Nav.Link>
+                  </Nav.Item>
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -44,20 +52,13 @@ function App() {
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/" exact>
-              <Home />
+          <Routes>
+            <Route path="/" exact element={<Home />} />
+            <Route path="/pokemonInfo" exact element={<PokemonInfoTab />} />
+            <Route path="/trainers/*" element={<Trainers />} />
+            <Route path="/moves" exact element={<Moves />}>
             </Route>
-            <Route path="/pokemonInfo" exact>
-              <PokemonInfoTab />
-            </Route>
-            <Route path="/trainers" exact>
-              <Trainers />
-            </Route>
-            <Route path="/moves" exact>
-              <Moves />
-            </Route>
-          </Switch>
+          </Routes>
         </div>
       </Router>
 
