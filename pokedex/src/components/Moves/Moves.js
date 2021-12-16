@@ -9,11 +9,17 @@ import { findAllMoves, updateMove, createMove, deleteMove } from '../../api/Move
 import EditMoveModal from './EditMoveModal';
 import DelMoveModal from './DelMoveModal';
 import Pages from '../Page';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { PokeInfoList } from './MoveEntryPokeInfo/PokeInfoList';
 
 // Main component for rendering moves
 export default function Moves(props) {
+    let navigate = useNavigate();
     return <div>
-        <MovesList></MovesList>
+        <Routes>
+            <Route path="/" element={<MovesList navigate={navigate}/>} />
+            <Route path="/pokeInfo/:moveId" element={<PokeInfoList />} />
+        </Routes>
     </div>
 }
 class MovesList extends React.Component {
@@ -65,6 +71,9 @@ class MovesList extends React.Component {
                     <Badge variant="primary" className="btn-primary me-2 align-self-center" pill>
                         {move.pk}
                     </Badge>
+                    <Button className="me-2" onClick={() => {
+                        this.props.navigate(`pokeInfo/${move.pk}`)
+                    }}>Known Pokemon</Button>
                     <Button className="me-2" onClick={() => {
                         this.setState({
                             moveIndex: move.pk,

@@ -23,3 +23,6 @@ export const updateMove = (id, newMoveData) =>{
 
 export const deleteMove = (id) =>
     postResource(urljoin(movePrefix, deleteResource, id.toString()) + "/", {});
+
+export const getPokemonInfoByMove = (id) =>
+    getResource(urljoin(movePrefix, "/pokemon_info/", id.toString()))
